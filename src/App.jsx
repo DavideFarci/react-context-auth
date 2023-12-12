@@ -7,12 +7,14 @@ import ShowPost from "./Pages/Posts/Show";
 import Register from "./Pages/Register";
 import Dashboard from "./Pages/Dashboard";
 import { AuthProvider } from "./contexts/AuthContext";
+import PrivateRoutes from "./middlewares/PrivateRoutes";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          {/* Rotte pubbliche  */}
           <Route element={<DefaultLayout />}>
             <Route path="/" element={<Home />}></Route>
             <Route path="/posts" element={<PostsList />}></Route>
@@ -20,7 +22,18 @@ function App() {
 
             <Route path="/login" element={<Login />}></Route>
             <Route path="/register" element={<Register />}></Route>
-            <Route path="/dashboard" element={<Dashboard />}></Route>
+          </Route>
+          {/* Rotte private  */}
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoutes>
+                <DefaultLayout />{" "}
+              </PrivateRoutes>
+            }
+          >
+            <Route index element={<Dashboard />}></Route>
+            <Route path="user" element={<Dashboard />}></Route>
           </Route>
         </Routes>
       </AuthProvider>
